@@ -1,12 +1,26 @@
 import React from "react";
-import { Avatar, IconButton, MenuItem, Menu } from "@mui/material";
+import {
+  Avatar,
+  IconButton,
+  MenuItem,
+  Menu,
+  FormControl,
+  Input,
+  InputAdornment,
+} from "@mui/material";
+import ChatCard from "./ChatCard";
 import { deepOrange, deepPurple } from "@mui/material/colors";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ChatIcon from "@mui/icons-material/Chat";
 import SettingsIcon from "@mui/icons-material/Settings";
 import Tooltip from "@mui/material/Tooltip";
+import SearchIcon from "@mui/icons-material/Search";
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 function Aside() {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [search, setSearch] = React.useState(null);
+  const [inputBgChange, setinputBgChange] = React.useState(null);
+  const inputField = React.useRef("");
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -19,6 +33,15 @@ function Aside() {
     console.log("logOut");
     setAnchorEl(null);
   };
+  React.useEffect(() => {
+    let input = document.querySelector(".aside__search input");
+    if (inputBgChange) {
+      input.focus();
+    }
+    return () => {
+      input = "";
+    };
+  }, [inputBgChange]);
   return (
     <aside>
       <div className="header">
@@ -80,6 +103,46 @@ function Aside() {
           </Menu>
         </div>
       </div>
+      <div className={`aside__search ${inputBgChange ? "bg-white" : ""}`}>
+        <FormControl variant="standard">
+          <Input
+            className="inputField"
+            id="input-with-icon-adornment"
+            placeholder={inputBgChange ? "" : "Search or start new chart"}
+            onChange={(e) => setSearch(e.target.value)}
+            onFocus={(e) => {
+              setinputBgChange(true);
+            }}
+            onBlur={(e) => {
+              setinputBgChange(false);
+            }}
+            type="search"
+            startAdornment={
+              <InputAdornment position="start">
+                {inputBgChange ? (
+                  <IconButton
+                    onClick={() => setinputBgChange((prev) => !prev)}
+                    aria-label="back"
+                  >
+                    <KeyboardBackspaceIcon />
+                  </IconButton>
+                ) : (
+                  <IconButton
+                    onClick={() => setinputBgChange((prev) => !prev)}
+                    aria-label="search"
+                  >
+                    <SearchIcon />
+                  </IconButton>
+                )}
+              </InputAdornment>
+            }
+          />
+        </FormControl>
+      </div>
+      <ul className="chat">
+        <ChatCard active={true} />
+        <ChatCard active={false}/>
+      </ul>
     </aside>
   );
 }
