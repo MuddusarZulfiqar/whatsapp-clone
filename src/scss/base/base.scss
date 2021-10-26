@@ -1,0 +1,43 @@
+:root {
+  --primary: #00bfa5;
+  --secondary: #009688;
+  --textcolor: #303030;
+  --bg: #dddbd1;
+  --shadow-rgb: 0, 0, 0;
+  --app-bg: #ededed;
+  --panel-header-background: #ededed;
+}
+
+html {
+  font-size: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-size: rem(16px);
+  font-family: $primary-font;
+  color: var(--textcolor);
+  line-height: 1;
+  margin: 0;
+  overflow-x: hidden;
+  font-weight: 400;
+  background: var(--bg);
+}
+
+.wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 1300px) {
+  .container {
+    max-width: 1200px;
+  }
+}
+
+@media screen and (max-width: 991px) {
+  html {
+    font-size: 80%;
+  }
+}

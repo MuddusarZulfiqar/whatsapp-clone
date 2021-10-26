@@ -1,0 +1,69 @@
+@import 'functions';
+
+
+// Theme Colors
+
+$default: #303030;
+$primary: #272b66;
+$secondary: #42e8df;
+$text-color: #1c1c1c;
+$link-color: #ffffff;
+$link-hover: #000000;
+
+// Fonts
+
+$primary-font: 'Lato', sans-serif;
+$primary-font-b: 'Lato', sans-serif;
+$time-new-roman: 'Times New Roman', 'serif';
+$arabic-font: '';
+
+//** Primary Font
+
+// font sizes
+$h--1: (
+	base: rem(35px),
+	mobile: rem(25px),
+	tablet: rem(30px),
+	wide: rem(35px),
+);
+$h--2: (
+	base: rem(35px),
+	mobile: rem(18px),
+	tablet: rem(30px),
+	wide: rem(35px),
+);
+$h--3: (
+	base: rem(32px),
+	mobile: rem(18px),
+	tablet: rem(28px),
+	wide: rem(32px),
+);
+$h--4: (
+	base: rem(26px),
+	mobile: rem(22px),
+	tablet: rem(24px),
+	wide: rem(26px),
+);
+
+$h--5: (
+	base: rem(24px),
+	mobile: rem(20px),
+	tablet: rem(22px),
+	wide: rem(24px),
+);
+$h--6: (
+	base: rem(24px),
+	mobile: rem(20px),
+	tablet: rem(22px),
+	wide: rem(24px),
+);
+$p: rem(18px);
+$p--large: rem(18px);
+$p--medium: rem(16px);
+$p--small: rem(14px);
+
+$breakpoints: (
+	mobile: 414px,
+	tablet: 991px,
+	wide: 1300px,
+) !default;
