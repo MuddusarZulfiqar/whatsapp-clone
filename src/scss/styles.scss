@@ -1,4 +1,197 @@
 @import 'import';
+.LoginButton{
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+}
+::selection {
+  color: #ffff;
+  background: rgb(142, 73, 232);
+}
+body.login_body {
+  width: 100%;
+  height: 100vh;
+  /* overflow: hidden; */
+  background: linear-gradient(to bottom, #68eacc 0%, #497be8 100%);
+}
+.wrapper {
+  background: #fff;
+  max-width: 400px;
+  width: 100%;
+  margin: 120px 20px 0 20px;
+  padding: 25px;
+  border-radius: 5px;
+  box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
+}
+.wrapper header {
+  font-size: 30px;
+  font-weight: 600;
+}
+.wrapper .inputField {
+  margin: 20px 0;
+  width: 100%;
+  display: flex;
+  height: 45px;
+}
+.inputField input {
+  width: 85%;
+  height: 100%;
+  outline: none;
+  border-radius: 3px;
+  border: 1px solid #ccc;
+  font-size: 17px;
+  padding-left: 15px;
+  transition: all 0.3s ease;
+}
+.inputField input:focus {
+  border-color: #8e49e8;
+}
+.inputField button.login {
+  width: 50px;
+  height: 100%;
+  border: none;
+  color: #fff;
+  margin-left: 5px;
+  font-size: 21px;
+  outline: none;
+  background: #8e49e8;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: all 0.3s ease;
+}
+.Disable {
+  opacity: 0.6;
+  pointer-events: none;
+}
+.inputField button.login:hover,
+.footer button.login:hover {
+  background: #721ce3;
+}
+.inputField button.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+.wrapper .todoList {
+  max-height: 250px;
+  overflow-y: auto;
+}
+.todoList li {
+  position: relative;
+  list-style: none;
+  height: 45px;
+  line-height: 45px;
+  margin-bottom: 8px;
+  background: #f2f2f2;
+  border-radius: 3px;
+  padding: 0 15px;
+  cursor: default;
+  overflow: hidden;
+}
+.todoList li .icon {
+  position: absolute;
+  right: -45px;
+  background: #e74c3c;
+  width: 45px;
+  text-align: center;
+  color: #fff;
+  border-radius: 0 3px 3px 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+@media screen and (max-width: 768px) {
+  .todoList li .icon {
+    right: 0px;
+  }
+}
+.todoList li:hover .icon {
+  right: 0px;
+}
+.wrapper .footer {
+  display: flex;
+  width: 100%;
+  margin-top: 20px;
+  align-items: center;
+  justify-content: space-between;
+}
+.footer button {
+  padding: 6px 10px;
+  border-radius: 3px;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-weight: 400;
+  font-size: 16px;
+  margin-left: 5px;
+  background: #8e49e8;
+  cursor: pointer;
+  user-select: none;
+  /* opacity: 0.6; */
+  transition: all 0.3s ease;
+}
+.footer button.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Signin Button  */
+
+.g-sign-in-button {
+  display: inline-block;
+  width: 240px;
+  height: 50px;
+  background-color: #4285f4;
+  color: #fff;
+  border-radius: 1px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.25);
+  transition: background-color 0.218s, border-color 0.218s, box-shadow 0.218s;
+}
+
+.g-sign-in-button:hover {
+  cursor: pointer;
+  -webkit-box-shadow: 0 0 3px 3px rgba(66, 133, 244, 0.3);
+  box-shadow: 0 0 3px 3px rgba(66, 133, 244, 0.3);
+}
+
+.g-sign-in-button:active {
+  background-color: #3367d6;
+  transition: background-color 0.2s;
+}
+
+.g-sign-in-button .content-wrapper {
+  height: 100%;
+  width: 100%;
+  border: 1px solid transparent;
+  font-size:0px;
+}
+
+.g-sign-in-button img {
+  width: 18px;
+  height: 18px;
+}
+
+.g-sign-in-button .logo-wrapper {
+  padding: 15px;
+  background: #fff;
+  width: 16px;
+  border-radius: 1px;
+  display: inline-block;
+}
+
+.g-sign-in-button .text-container {
+  font-family: Roboto, arial, sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.21px;
+  font-size: 16px;
+  line-height: 48px;
+  vertical-align: top;
+  border: none;
+  display: inline-block;
+  text-align: center;
+  width: 180px;
+}
+
 .MoreListItems {
     padding-right: 58px !important;
     padding-left: 24px !important;
@@ -9,7 +202,26 @@
 
 .chat{
   list-style-type:none;
-  // margin-top:rem(15px);
+  overflow: auto;
+  width: 100%;
+  height: calc(100% - 125px);
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+   
+  &::-webkit-scrollbar-track {
+    // box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  }
+   
+  &::-webkit-scrollbar-thumb {
+    background-color: darkgray;
+    outline: 1px solid darkgray;
+  }
+  .active{
+    li{
+      background:var(--background-default-active) !important;
+    }
+  }
   &__listItem{
     height:72px;
     display:flex;
@@ -17,6 +229,7 @@
     padding: rem(10px) rem(16px);
     cursor:pointer;
     position:relative;
+    width: calc(100% - 33px);
     &::before{
       content:'';
       width: calc(100% - 70px);
@@ -26,9 +239,6 @@
           right: 0;
           bottom: 0;
           z-index: 1;
-    }
-    &.active{
-      background:var(--background-default-active) !important;
     }
     &:hover{
       background:var(--background-default-hover);
@@ -76,6 +286,150 @@
           border-radius:50%;
         }
       }
+    }
+  }
+}
+
+
+.chatContent{
+  flex:1;
+  &__head{
+    display:flex;
+    justify-content:space-between;
+    padding: rem(10px) rem(16px);
+    border-left: 1px solid var(--border-stronger);
+    height: 60px;
+    box-sizing: border-box;
+    &--name{
+      display: flex;
+      align-items: center;
+      .name{
+        margin-left: rem(14px);
+            font-size: rem(18px);
+      }
+    }
+  }
+  &__body{
+    height: calc(100% - 60px);
+    box-sizing: border-box;
+    background-size: 500px ;
+    background-color:#e5ddd5;
+    background-blend-mode: overlay;
+    background-repeat: repeat ;
+    border-left:1px solid rgba(0,0,0,0.03);
+    background-position:center;
+    position:relative;
+    &::after{
+      content:'';
+      content: "";
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      background-size: 530px;
+      background-position: center;
+      background-repeat: repeat;
+      opacity: 0.04 ;
+      top: 0;
+    }
+  }
+  &__chat{
+    width: 100%;
+    height: calc(100% - 114px);
+    box-sizing: border-box;
+    flex: 1;
+    height: calc(100% - 62px);
+    overflow-y:auto;
+    position: relative;
+    z-index: 1;
+    padding-inline: 82px;
+    &::-webkit-scrollbar {
+      width: 5px;
+    }
+     
+    &::-webkit-scrollbar-track {
+      // box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    }
+     
+    &::-webkit-scrollbar-thumb {
+      background-color: darkgray;
+      outline: 1px solid darkgray;
+    }
+    .message{
+      max-width: 400px;
+      width: max-content;
+      padding: 10px;
+      display: block;
+      margin: 20px 0px;
+      background: #fff;
+      position: relative;
+      padding-right: 30px;
+      padding-top: 20px;
+      span{
+        line-height:1.5;
+        &.userName{
+          position: absolute;
+          display: block;
+          font-size: 10px;
+          top: 2px;
+          right: 5px;
+          font-weight: bold;
+        }
+      }
+      &::before{
+        content: "";
+        display: inline-block;
+        width: 0;
+        position: absolute;
+        top: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 15px 15px 0 0;
+        border-color: #fff transparent transparent transparent;
+        left: -15px;
+        transform: rotate(90deg);
+      }
+      &.send{
+        background: #dcf8c6;
+        margin-left: auto;
+        span{
+          line-height:1.5;
+          &.userName{
+            left: 5px;
+            right:auto;
+          }
+        }
+        &::before{
+          left:auto;
+          right:-15px;
+          transform: rotate(0deg);
+          border-color: #dcf8c6 transparent transparent transparent;
+        }
+      }
+    }
+  }
+  &__footer{ 
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    display: flex;
+    z-index: 1;
+    height: 62px;
+    align-items: center;
+    padding-inline: rem(10px);
+    background: #f0f0f0;
+    box-sizing: border-box;
+    &--input{
+      flex:1;
+    }
+    svg{
+      font-size: 27px;
+    }
+    &--fileEmoji{
+      margin-right: 7px;
+    }
+    &--voice{
+      margin-left: 7px;
+
     }
   }
 }

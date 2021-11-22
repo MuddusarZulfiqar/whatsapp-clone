@@ -16,12 +16,19 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import Tooltip from "@mui/material/Tooltip";
 import SearchIcon from "@mui/icons-material/Search";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
-function Aside() {
+import { NavLink } from "react-router-dom";
+
+import { auth } from "../firebase.js";
+import { SignOut } from "../App/Actions/userAction";
+import { useDispatch, useSelector } from "react-redux";
+function Aside({ message, user, googleUser }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [search, setSearch] = React.useState(null);
+  const [search, setSearch] = React.useState("");
   const [inputBgChange, setinputBgChange] = React.useState(null);
   const inputField = React.useRef("");
   const open = Boolean(anchorEl);
+  const dispatch = useDispatch();
+  const googleReduxUser = useSelector((state) => state.User);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -31,6 +38,9 @@ function Aside() {
   };
   const logOut = () => {
     console.log("logOut");
+    auth.signOut().then(() => {
+      dispatch(SignOut());
+    });
     setAnchorEl(null);
   };
   React.useEffect(() => {
@@ -45,13 +55,13 @@ function Aside() {
   return (
     <aside>
       <div className="header">
-        <Tooltip title="Your Name" placement="right">
+        <Tooltip title={googleReduxUser.name} placement="right">
           <Avatar
+            alt={googleReduxUser.name}
+            src={googleReduxUser.photo}
+            sx={{ width: 40, height: 40 }}
             onClick={() => alert("Clicked")}
-            sx={{ bgcolor: deepOrange[500] }}
-          >
-            N
-          </Avatar>
+          />
         </Tooltip>
 
         <div className="header__info">
@@ -74,7 +84,7 @@ function Aside() {
               aria-expanded={open ? "true" : undefined}
               aria-haspopup="true"
               onClick={handleClick}
-              // className="mx-5"
+            // className="mx-5"
             >
               <MoreVertIcon />
             </IconButton>
@@ -109,13 +119,16 @@ function Aside() {
             className="inputField"
             id="input-with-icon-adornment"
             placeholder={inputBgChange ? "" : "Search or start new chart"}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => {
+              setSearch(e.target.value);
+            }}
             onFocus={(e) => {
               setinputBgChange(true);
             }}
             onBlur={(e) => {
               setinputBgChange(false);
             }}
+            value={search}
             type="search"
             startAdornment={
               <InputAdornment position="start">
@@ -140,8 +153,15 @@ function Aside() {
         </FormControl>
       </div>
       <ul className="chat">
-        <ChatCard active={true} />
-        <ChatCard active={false}/>
+        {user.map((users, index) => (
+          <NavLink key={users.id} to={`/user/${users.id}`}>
+            <ChatCard
+              key={users.id}
+              userdata={users}
+              messageLast={message[message.length - 1]}
+            />
+          </NavLink>
+        ))}
       </ul>
     </aside>
   );
