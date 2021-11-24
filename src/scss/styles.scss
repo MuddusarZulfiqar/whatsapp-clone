@@ -6,6 +6,11 @@
   justify-content: center;
   align-items: center;
 }
+.disabled{
+  opacity: 0.4;
+  display: block;
+  cursor:no-drop;
+}
 ::selection {
   color: #ffff;
   background: rgb(142, 73, 232);

@@ -7,26 +7,23 @@ import NotFound from "./components/NotFound";
 import {
   Routes,
   Route,
-  useNavigate,
   Navigate,
-  useParams,
 } from "react-router-dom";
 import LoginButton from "./components/LoginButton";
 // google auth
 import firebase from "./firebase";
-import { signInWithGoogle } from "./firebase";
 
 // redux
 import { SignIn } from "./App/Actions/userAction";
 import { useDispatch, useSelector } from "react-redux";
 function App() {
-  const navigate = useNavigate();
+  
   const [message, setmessge] = useState();
   const [user, setuser] = useState();
   const [googleUser, setGoogleUser] = useState(null);
+  const [urlId,setUrlId] = useState(null)
   const dispatch = useDispatch();
   const googleReduxUser = useSelector((state) => state.User);
-  const { userId } = useParams();
   const fetchMessage = () => {
     db.collection("messages")
       .orderBy("date_time")
@@ -37,7 +34,7 @@ function App() {
         });
         setmessge(messages);
       });
-    db.collection("users").onSnapshot((snap) => {
+    db.collection("users").orderBy("time").onSnapshot((snap) => {
       let users = [];
       snap.docs.forEach((doc) => {
         users.push({ ...doc.data(), id: doc.id });
@@ -54,71 +51,38 @@ function App() {
         setGoogleUser(GoogleUseruser);
         const googleUser = {
           ...googleReduxUser,
+          time: new Date().valueOf()
         };
-        // if (googleUser.email && user) {
-        //   function check(arr, name) {
-        //     const { length } = arr;
-        //     const found = arr.some(val => val.email === name);
-        //     const result = (found) ? true : false;
-        //     return result;
-        //   } // This function will return true or false if value matche
-
-        //   if (!check(user, googleUser.email)) {         // if email abc@gmail.com will be in our database it will 
-        //     console.log(`one record inserted : ${googleUser.email}`);
-        //     db.collection("users").add(googleUser);
-        //   } else {
-        //     console.error("This email already exists");
-        //   }
-        // }
         if (googleUser?.email && user) {
-          // for (let i = 0; i < user.length; i++) {
-          //   console.log(user[i], "User from APP")
-          //   if (user[i].email === googleUser.email) {
-          //     console.log('not add the user User already !');
-          //   }
-          //   else {
-          //     console.log('User is add into db!')
-          //     db.collection("users").add(googleUser);
-          //   }
-          // }
-          const checkUsers = new Promise((res, rej) => {
-            const CheckUser = user.filter((u) => u?.email === googleUser?.email);
-            if (CheckUser.length > 0) {
-              res(CheckUser);
-            }
-            else {
-              rej("Something went wrong !");
-            }
-          })
-          checkUsers.then((data) => {
-            console.log('Add user', data);
-            // db.collection("users").add(googleUser);
-          }).catch((err) => {
-            console.log(err)
-          })
-
-          // ;
-          // console.log(CheckUser);
-          // if (CheckUser.length == 0) {
-          //   console.log('Add user')
-          //   db.collection("users").add(googleUser);
-          // }
-          // else {
-          //   console.log('User already')
-          // }
+          if (user.filter(u => u.email === googleUser.email).length === 0) {
+            console.log('Enter into the DB');
+            db.collection("users").add(googleUser);
+          }
+          else {
+            console.log(googleUser)
+          }
         }
-      }
+        if(user){
+          const CurrentUser = firebase.auth().currentUser;
+            const checkUserUrl = user.find((el)=>{
+                return el.email === email
+            })
+            setUrlId(checkUserUrl.id)
+          }
+        }
+        
     });
-  }, [googleUser]);
+  }, [googleUser,urlId]);
+  
   {
     return (
       <div className="App">
         {googleReduxUser.name ? (
-          user ? (
+          user && urlId ? (
             <Routes>
               <Route
                 path="/"
-                element={<Navigate to={`/user/${user[0].id}`} />}
+                element={<Navigate to={`/user/${urlId}`} />}
               />
               <Route
                 path="/user/:userId"

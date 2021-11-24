@@ -9,7 +9,6 @@ import {
   InputAdornment,
 } from "@mui/material";
 import ChatCard from "./ChatCard";
-import { deepOrange, deepPurple } from "@mui/material/colors";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ChatIcon from "@mui/icons-material/Chat";
 import SettingsIcon from "@mui/icons-material/Settings";
@@ -21,11 +20,12 @@ import { NavLink } from "react-router-dom";
 import { auth } from "../firebase.js";
 import { SignOut } from "../App/Actions/userAction";
 import { useDispatch, useSelector } from "react-redux";
+import firebase from "@firebase/app-compat";
 function Aside({ message, user, googleUser }) {
+  const { email } = firebase.auth().currentUser;
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [search, setSearch] = React.useState("");
   const [inputBgChange, setinputBgChange] = React.useState(null);
-  const inputField = React.useRef("");
   const open = Boolean(anchorEl);
   const dispatch = useDispatch();
   const googleReduxUser = useSelector((state) => state.User);
@@ -40,7 +40,9 @@ function Aside({ message, user, googleUser }) {
     console.log("logOut");
     auth.signOut().then(() => {
       dispatch(SignOut());
-    });
+    }).finally(() => {
+      window.location.reload(true);
+    })
     setAnchorEl(null);
   };
   React.useEffect(() => {
@@ -52,6 +54,11 @@ function Aside({ message, user, googleUser }) {
       input = "";
     };
   }, [inputBgChange]);
+  const handleClickLink = (e, disable) => {
+    if (disable === 'disabled') {
+      e.preventDefault()
+    }
+  }
   return (
     <aside>
       <div className="header">
@@ -154,7 +161,7 @@ function Aside({ message, user, googleUser }) {
       </div>
       <ul className="chat">
         {user.map((users, index) => (
-          <NavLink key={users.id} to={`/user/${users.id}`}>
+          <NavLink className={users.email === email ? '' : 'disabled'} onClick={(e) => handleClickLink(e, users.email === email ? '' : 'disabled')} key={users.id} to={`/user/${users.id}`}>
             <ChatCard
               key={users.id}
               userdata={users}

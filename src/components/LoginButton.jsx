@@ -3,11 +3,15 @@ import { auth, provider } from "../firebase";
 import { SignIn } from "../App/Actions/userAction";
 import { useDispatch } from "react-redux";
 function LoginButton() {
+  // window.location.reload(true);
+  // window.location.reload();
+
   useEffect(() => {
-    document.body.classList.add = "login_body";
-    return () => {
-      document.body.classList.remove = "login_body";
-    };
+
+
+    // return () => {
+    //   document.body.classList.remove = "login_body";
+    // };
   }, []);
   const dispatch = useDispatch();
   const SignInWithGoogle = () => {

@@ -8,11 +8,11 @@ function ChatCard({ userdata, messageLast }) {
         onClick={() => alert("Clicked")}
         sx={{ bgcolor: deepOrange[500] }}
       >
-        {userdata?.name.charAt(0)}
+        {userdata?.name.charAt(0).toUpperCase()}
       </Avatar>
       <div className="chat__listItem--detail">
         <div className="chat__listItem--detail_name">
-          <span className="name">{userdata.name}</span>
+          <span className="name">{userdata.name.toLowerCase().charAt(0).toUpperCase() + (userdata.name.slice(1).toLowerCase())}</span>
           <span className="chat__listItem--detail_time">
             {messageLast.date_time.substring(12)}
           </span>

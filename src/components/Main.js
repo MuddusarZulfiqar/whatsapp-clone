@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Avatar, IconButton, Tooltip, FormControl, Input } from "@mui/material";
-import { deepOrange, deepPurple } from "@mui/material/colors";
+import { deepOrange } from "@mui/material/colors";
 import SearchIcon from "@mui/icons-material/Search";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import MoodIcon from "@mui/icons-material/Mood";
@@ -8,13 +8,11 @@ import AttachFileIcon from "@mui/icons-material/AttachFile";
 import KeyboardVoiceIcon from "@mui/icons-material/KeyboardVoice";
 import { useParams } from "react-router-dom";
 import { db } from "../firebase";
-import { useSelector } from "react-redux";
-
 function Main({ messagesMain }) {
+
   const [userDetail, setUserDetails] = useState("");
   const [message, setMessage] = useState("");
   const { userId } = useParams();
-  const googleReduxUser = useSelector((state) => state.User);
   useEffect(() => {
     db.collection("users")
       .doc(userId)
@@ -71,19 +69,20 @@ function Main({ messagesMain }) {
           </style>
           <div className="chatContent__chat">
             {messagesMain.map((messagess) => (
-              <div
-                key={messagess.id}
-                className={`message ${
-                  messagess.sender_id === userId ? "send" : ""
-                }`}
-              >
-                <span className="userName">
-                  {messagess.sender_id === userId
-                    ? "you"
-                    : messagess.sender_name}
-                </span>
-                <span>{messagess.message}</span>
-              </div>
+              <Tooltip key={messagess.id} title={messagess.sender_name.toLowerCase().charAt(0).toUpperCase() + (messagess.sender_name.slice(1).toLowerCase())} placement="right">
+                <div
+
+                  className={`message ${messagess.sender_id === userId ? "send" : ""
+                    }`}
+                >
+                  <span className="userName">
+                    {messagess.sender_id === userId
+                      ? "you"
+                      : messagess.sender_name.toLowerCase().charAt(0).toUpperCase() + (messagess.sender_name.slice(1).toLowerCase())}
+                  </span>
+                  <span>{messagess.message}</span>
+                </div>
+              </Tooltip>
             ))}
           </div>
           <div className="chatContent__footer">
@@ -110,9 +109,7 @@ function Main({ messagesMain }) {
               </FormControl>
             </div>
             <div className="chatContent__footer--voice">
-              <IconButton
-              // className="mx-5"
-              >
+              <IconButton>
                 <KeyboardVoiceIcon />
               </IconButton>
             </div>
