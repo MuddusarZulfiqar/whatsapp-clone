@@ -19,8 +19,6 @@ import { signInWithGoogle } from "./firebase";
 // redux
 import { SignIn } from "./App/Actions/userAction";
 import { useDispatch, useSelector } from "react-redux";
-import { render } from "sass";
-import { Logout } from "@mui/icons-material";
 function App() {
   const navigate = useNavigate();
   const [message, setmessge] = useState();
@@ -30,7 +28,6 @@ function App() {
   const googleReduxUser = useSelector((state) => state.User);
   const { userId } = useParams();
   const fetchMessage = () => {
-
     db.collection("messages")
       .orderBy("date_time")
       .onSnapshot((snap) => {
@@ -49,6 +46,7 @@ function App() {
     });
   };
   useEffect(() => {
+    fetchMessage();
     firebase.auth().onAuthStateChanged((GoogleUseruser) => {
       if (GoogleUseruser) {
         const { displayName, email, photoURL } = GoogleUseruser;
@@ -57,26 +55,60 @@ function App() {
         const googleUser = {
           ...googleReduxUser,
         };
-        console.log("Entetr loop");
-        if (googleUser.email && user) {
-          function check(arr, name) {
-            const { length } = arr;
-            const found = arr.some(val => val.email === name);
-            const result = (found) ? true : false;
-            return result;
-          } // This function will return true or false if value matche
+        // if (googleUser.email && user) {
+        //   function check(arr, name) {
+        //     const { length } = arr;
+        //     const found = arr.some(val => val.email === name);
+        //     const result = (found) ? true : false;
+        //     return result;
+        //   } // This function will return true or false if value matche
 
-          if (!check(user, googleUser.email)) {         // if email abc@gmail.com will be in our database it will 
-            console.log(`one record inserted : ${googleUser.email}`);
-            db.collection("users").add(googleUser);
-          } else {
-            console.error("This email already exists");
-          }
+        //   if (!check(user, googleUser.email)) {         // if email abc@gmail.com will be in our database it will 
+        //     console.log(`one record inserted : ${googleUser.email}`);
+        //     db.collection("users").add(googleUser);
+        //   } else {
+        //     console.error("This email already exists");
+        //   }
+        // }
+        if (googleUser?.email && user) {
+          // for (let i = 0; i < user.length; i++) {
+          //   console.log(user[i], "User from APP")
+          //   if (user[i].email === googleUser.email) {
+          //     console.log('not add the user User already !');
+          //   }
+          //   else {
+          //     console.log('User is add into db!')
+          //     db.collection("users").add(googleUser);
+          //   }
+          // }
+          const checkUsers = new Promise((res, rej) => {
+            const CheckUser = user.filter((u) => u?.email === googleUser?.email);
+            if (CheckUser.length > 0) {
+              res(CheckUser);
+            }
+            else {
+              rej("Something went wrong !");
+            }
+          })
+          checkUsers.then((data) => {
+            console.log('Add user', data);
+            // db.collection("users").add(googleUser);
+          }).catch((err) => {
+            console.log(err)
+          })
+
+          // ;
+          // console.log(CheckUser);
+          // if (CheckUser.length == 0) {
+          //   console.log('Add user')
+          //   db.collection("users").add(googleUser);
+          // }
+          // else {
+          //   console.log('User already')
+          // }
         }
-
       }
     });
-    fetchMessage();
   }, [googleUser]);
   {
     return (
