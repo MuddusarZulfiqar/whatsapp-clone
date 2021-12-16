@@ -17,11 +17,11 @@ import firebase from "./firebase";
 import { SignIn } from "./App/Actions/userAction";
 import { useDispatch, useSelector } from "react-redux";
 function App() {
-  
+
   const [message, setmessge] = useState();
   const [user, setuser] = useState();
   const [googleUser, setGoogleUser] = useState(null);
-  const [urlId,setUrlId] = useState(null)
+  const [urlId, setUrlId] = useState(null)
   const dispatch = useDispatch();
   const googleReduxUser = useSelector((state) => state.User);
   const fetchMessage = () => {
@@ -43,6 +43,8 @@ function App() {
     });
   };
   useEffect(() => {
+    const CurrentUser = firebase.auth().currentUser;
+    console.log()
     fetchMessage();
     firebase.auth().onAuthStateChanged((GoogleUseruser) => {
       if (GoogleUseruser) {
@@ -54,26 +56,42 @@ function App() {
           time: new Date().valueOf()
         };
         if (googleUser?.email && user) {
+          const CurrentUser = firebase.auth().currentUser;
           if (user.filter(u => u.email === googleUser.email).length === 0) {
             console.log('Enter into the DB');
-            db.collection("users").add(googleUser);
+            db.collection("users").add(googleUser).then((data) => {
+              if (data) {
+                setUrlId(data.id);
+              }
+            }).finally(() => {
+              window.alert(`Welcome New User`)
+            })
+
           }
           else {
             console.log(googleUser)
           }
         }
-        if(user){
+        if (CurrentUser != undefined) {
           const CurrentUser = firebase.auth().currentUser;
-            const checkUserUrl = user.find((el)=>{
-                return el.email === email
+          console.log(user, 'CUrrent user')
+          if (user) {
+            const checkUserUrl = user.find((el) => {
+              return el.email === CurrentUser.email
             })
-            setUrlId(checkUserUrl.id)
+            if (checkUserUrl) {
+              setUrlId(checkUserUrl.id);
+            }
+            else {
+              console.log(checkUserUrl)
+            }
           }
         }
-        
+      }
+
     });
-  }, [googleUser,urlId]);
-  
+  }, [googleUser, urlId]);
+
   {
     return (
       <div className="App">
